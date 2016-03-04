@@ -5,22 +5,17 @@
  */
 'use strict';
 
-var  bcrypt = require('bcryptjs');
-//  jwt = require('jwt-simple'),
+var  bcrypt = require('bcryptjs'),
+     jwt = require('jwt-simple');
 //  corngoose = require('../js/corngoose');
-var errObj = {name: 'Missing Parameter', message: 'Missing second parameter authorization object {password:\'\''};
-module.exports = function () {
+var errObj = {name: '', message: ''};
+module.exports = (function () {
   return{
     authenticate: function (usrObj, authObj, cb) {
-      //Check parameters
-      if(!(authObj)) return cb(errObj, null);
-      if(!(usrObj)){
-        errObj.name = 'Missing first parameter user object {password:\'\'';
-        return cb(errObj, null);
-      }
+
       //Check for minimum properties
-      var chk = testAuthorizeInput(usrObj, authObj);
-      if(chk) return cb(chk, null);
+      var chkFailed = testAuthorizeInput(usrObj, authObj);
+      if(chkFailed) return cb(chkFailed, null);
 
       //Check userName
       errObj.name = 'Mismatch';
@@ -46,16 +41,20 @@ module.exports = function () {
         }
       }
 
-      var pass = testPassword(usrObj.password, authObj.password);
-      if(pass){
-        return cb(null, true);
-      }
-      else{
-        errObj.message = 'The password failed authentication';
-      }
-
+      testPassword(usrObj.password, authObj.password, function(err, data){
+        if(err){
+          cb(err, null);
+        }
+        else{
+          if(data) cb(null, data);
+          else{
+            errObj.message = 'The password failed authentication';
+            cb(errObj, null);
+          }
+        }
+      });
     },
-    Returns hash of password
+    //Returns hash of password
     encrypt: function (password, cb) {
       bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(password, salt, function (err, hash) {
@@ -63,25 +62,10 @@ module.exports = function () {
           else return cb(null, hash);
         });
       });
+    },
+    makeToken: function (payload, secret, cb) {
+      return jwt.encode(payload, secret);
     }
-    //makeToken: function (cb) {
-    //  var payload = {email: usrObj.email};
-    //  var secret = usrObj.password;
-    //  usrObj.atoken = jwt.encode(payload, secret);
-    //  corngoose.dbDocUpdate(payload, {atoken: usrObj.atoken}, 'users', function(err, stored){
-    //    if(err){
-    //      return cb(err, null);
-    //    }
-    //    if(stored){
-    //      corngoose.dbDocFind({email: usrObj.email}, 'users', function(err, doc){
-    //        if(err){
-    //          return cb(err, null);
-    //        }
-    //        return cb(null, doc[0]);
-    //      });
-    //    }
-    //  });
-    //},
     //getTokenInfo: function (tk, cb) {
     //  corngoose.dbDocFind({atoken: tk}, 'users', function(err, doc){
     //    if(err){
@@ -120,7 +104,7 @@ module.exports = function () {
     //  });
     //}
   }
-};
+})();
 //usrObj and authObj require at the least a password property
 function testAuthorizeInput(usrObj, authObj){
   if(!(usrObj.password)){
@@ -135,8 +119,9 @@ function testAuthorizeInput(usrObj, authObj){
   }
 }
 
-function testPassword(usr, auth) {
+function testPassword(usr, auth, cb) {
   bcrypt.compare(usr, auth, function (err, res) {
-    return res;
+    if(err) cb(err, null);
+    else cb(null, res);
   });
 }
