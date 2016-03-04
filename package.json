@@ -1,0 +1,25 @@
+{
+  "name": "cornorize",
+  "version": "1.0.0",
+  "description": "A lightweight authentication module",
+  "main": "cornorize.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dcorns/cornorize.git"
+  },
+  "keywords": [
+    "authorization",
+    "authorize",
+    "encrypt",
+    "token"
+  ],
+  "author": "Dale Corns <codefellow@gmail.com> (http://www.dalecorns.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dcorns/cornorize/issues"
+  },
+  "homepage": "https://github.com/dcorns/cornorize#readme"
+}
