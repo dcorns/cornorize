@@ -70,6 +70,9 @@ module.exports = (function () {
     },
     decodeToken: function (token, secret){
       return jwt.decode(token, secret);
+    },
+    getTokenResources: function (token, secret){
+      return jwt.decode(token, secret).resources;
     }
     //getTokenInfo: function (tk, cb) {
     //  corngoose.dbDocFind({atoken: tk}, 'users', function(err, doc){
