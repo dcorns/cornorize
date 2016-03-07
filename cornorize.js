@@ -7,7 +7,6 @@
 
 var  bcrypt = require('bcryptjs'),
      jwt = require('jwt-simple');
-//  corngoose = require('../js/corngoose');
 var errObj = {name: '', message: ''};
 module.exports = (function () {
   return{
@@ -63,8 +62,11 @@ module.exports = (function () {
         });
       });
     },
-    makeToken: function (payload, secret, cb) {
+    makeToken: function (payload, secret) {
       return jwt.encode(payload, secret);
+    },
+    decodeToken: function (token, secret){
+      return jwt.decode(token, secret);
     }
     //getTokenInfo: function (tk, cb) {
     //  corngoose.dbDocFind({atoken: tk}, 'users', function(err, doc){

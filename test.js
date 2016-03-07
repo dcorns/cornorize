@@ -34,3 +34,5 @@ auth.encrypt('sOmePazzWo2d', function(err, data){
 
 var token = auth.makeToken('dcorns@hotmail.com', 'IShouldWalkLikeJesusWalked');
 console.dir(token);
+var payload = auth.decodeToken(token, 'IShouldWalkLikeJesusWalked');
+console.dir(payload);
