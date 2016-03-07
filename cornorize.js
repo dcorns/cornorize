@@ -62,7 +62,10 @@ module.exports = (function () {
         });
       });
     },
-    makeToken: function (payload, secret) {
+    makeToken: function (resourceObject, daysValid, secret) {
+      var exp = new Date();
+      exp.setTime(exp.getTime() + daysValid * 86400000);
+      var payload = {resources: resourceObject, expires: exp};
       return jwt.encode(payload, secret);
     },
     decodeToken: function (token, secret){
