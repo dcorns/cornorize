@@ -84,43 +84,6 @@ module.exports = (function () {
       }
       return {data: result.resources};
     }
-    //getTokenInfo: function (tk, cb) {
-    //  corngoose.dbDocFind({atoken: tk}, 'users', function(err, doc){
-    //    if(err){
-    //      return cb(err, null);
-    //    }
-    //    return cb(null, doc[0]);
-    //  });
-    //},
-    //authorizePgpEdit: function (user, pgpID, cb){
-    //  corngoose.dbDocFind({_id: pgpID}, 'notes', function(err, cursor){
-    //    if(err) return cb(err, null);
-    //    var authorized = false;
-    //    if(cursor[0].ta){
-    //      if(cursor[0].ta === user.email || user.roll === 'admin'){
-    //        authorized = true;
-    //      }
-    //    }
-    //    else{
-    //      authorized = true;
-    //    }
-    //    return cb(null, authorized);
-    //  });
-    //},
-    //basicAuth: function(credentialsIn, cb){
-    //  corngoose.dbDocFind({type:'authorization'}, 'protectedvar', function(err, doc){
-    //    if(err){
-    //      console.log('authorize 95 DataError: '+err.msg);
-    //      return cb(err, false);
-    //    }
-    //    if(credentialsIn === doc[0].basicAuthVar){
-    //      return cb(null, true);
-    //    }
-    //    else{
-    //      return cb(null, false);
-    //    }
-    //  });
-    //}
   }
 })();
 //usrObj and authObj require at the least a password property
