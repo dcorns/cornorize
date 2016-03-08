@@ -44,7 +44,7 @@ email: String]}
 ```
 - **Function** *cb*
 
-Password key is required for both Objects. At a minimum the original password needs to be the value of usrObj.password and the original hash needs to be the value of authObj.password. Additionally if either Object contains a userName and or email key, then the corresponding Object must contain the same key/value pairs in order to pass authentication.
+At a minimum the original password needs to be the value of usrObj.password and the original hash needs to be the value of authObj.passHash. Additionally if either Object contains a userName and or email key, then the corresponding Object must contain the same key/value pairs in order to pass authentication.
 
 ```javascript
 auth.authenticate({password: 'sOmePazzWo2d'}, {passHash: '$2a$10$iJ/oqCu/KOx9LiyYtFgcIukTj624RbPr1WKSHKU0/9lQelSK8sd4m'}, function(err, data){
