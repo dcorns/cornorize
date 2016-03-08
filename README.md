@@ -7,7 +7,8 @@ npm install cornorize --save
 ```
 
 ### Overview
-In your project file `var auth = require('cornorize');`.
+In your project file ```javascript
+var auth = require('cornorize');```
 
 ### Usage Examples
 #### encrypt: Encrypt input and return the hash
