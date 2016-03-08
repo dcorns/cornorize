@@ -40,7 +40,7 @@ module.exports = (function () {
         }
       }
 
-      testPassword(usrObj.password, authObj.password, function(err, data){
+      testPassword(usrObj.password, authObj.passHash, function(err, data){
         if(err){
           cb(err, null);
         }
@@ -72,7 +72,17 @@ module.exports = (function () {
       return jwt.decode(token, secret);
     },
     getTokenResources: function (token, secret){
-      return jwt.decode(token, secret).resources;
+      var result;
+      try{
+       result = jwt.decode(token, secret);
+      }
+      catch(e){
+        return {error: e};
+      }
+      if(tokenIsExpired(result.expires)){
+        return {error: 'Token Expired!'};
+      }
+      return {data: result.resources};
     }
     //getTokenInfo: function (tk, cb) {
     //  corngoose.dbDocFind({atoken: tk}, 'users', function(err, doc){
@@ -120,9 +130,9 @@ function testAuthorizeInput(usrObj, authObj){
     errObj.message = 'usrObj must have a password property';
     return errObj;
   }
-  if(!(authObj.password)){
+  if(!(authObj.passHash)){
     errObj.name = 'Missing property';
-    errObj.message = 'authObj must have a password property';
+    errObj.message = 'authObj must have a hash property';
     return errObj;
   }
 }
@@ -132,4 +142,10 @@ function testPassword(usr, auth, cb) {
     if(err) cb(err, null);
     else cb(null, res);
   });
+}
+
+function tokenIsExpired(exp){
+  var today = new Date();
+  exp = new Date(exp);
+  return (today.getTime() > exp.getTime());
 }

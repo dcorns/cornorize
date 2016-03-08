@@ -44,10 +44,10 @@ email: String]}
 ```
 - **Function** *cb*
 
-Password key is required for both Objects. At a minimum the original password needs to be the value of usrObj.password and the original hash needs to be the value of authObj.password. Addtionally if either Object contains a userName and or email key, then the corresponding Object must contain the same key/value pairs in order to pass.
+Password key is required for both Objects. At a minimum the original password needs to be the value of usrObj.password and the original hash needs to be the value of authObj.password. Additionally if either Object contains a userName and or email key, then the corresponding Object must contain the same key/value pairs in order to pass authentication.
 
 ```javascript
-auth.authenticate({password: 'sOmePazzWo2d'}, {password: hash}, function(err, data){
+auth.authenticate({password: 'sOmePazzWo2d'}, {passHash: '$2a$10$iJ/oqCu/KOx9LiyYtFgcIukTj624RbPr1WKSHKU0/9lQelSK8sd4m'}, function(err, data){
   if(err){
     console.error(err);
   }
@@ -57,3 +57,29 @@ auth.authenticate({password: 'sOmePazzWo2d'}, {password: hash}, function(err, da
 }
 ```
 
+### makeToken: Takes a resource object, an expiration integer and a secret. Returns a token.
+#### Parameters
+- **Object** *resourceObject*
+- **Integer** *daysValid*
+- **String** *secret*
+
+```javascript
+var payloadIn = {resourceList: ['/user/home/username'], accessLevel: ['admin']};
+var token = auth.makeToken(payloadIn, 35, 'IShouldWalkLikeJesusWalked');
+```
+
+### getTokenResource: Takes a token and a secret. Returns a failure object {error: *error message*} or a resource object {data: *resourceObject*}.
+#### Parameters
+- **String** *token*
+- **String** *secret*
+
+```javascript
+var payloadOut = auth.decodeToken(token, 'IShouldWalkLikeJesusWalked');
+```
+
+## Testing
+Due to milliseconds difference between expiration time set and expiration time retrieval from test, token test may appear to fail at milliseconds <> date change. This is a problem with test and not the token code. Running the test again after a minute should yield a proper result. 
+```bash
+npm install;
+npm test;
+```
