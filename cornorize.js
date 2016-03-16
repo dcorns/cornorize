@@ -95,7 +95,7 @@ function testAuthorizeInput(usrObj, authObj){
   }
   if(!(authObj.passHash)){
     errObj.name = 'Missing property';
-    errObj.message = 'authObj must have a hash property';
+    errObj.message = 'authObj must have a passHash property';
     return errObj;
   }
 }

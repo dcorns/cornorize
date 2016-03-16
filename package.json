@@ -1,6 +1,6 @@
 {
   "name": "cornorize",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A lightweight authentication module",
   "main": "cornorize.js",
   "scripts": {
